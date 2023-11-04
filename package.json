@@ -1,10 +1,20 @@
 {
   "name": "flow-framework",
   "version": "1.0.0",
-  "description": "A cross-platform javascript framework incorporating aspects of flow-based programming (FBP). The idea is to allow any ES6 Javascript module that extends the Flow class to be easily and seemlessly integrated into the client-side or server-side of an application built using the Flow Framework.",
-  "main": "index.js",
+  "description": "A cross-platform javascript framework incorporating aspects of flow-based programming (FBP).",
+  "main": "flow.js",
   "scripts": {
-    "test": "echo \"TODO: Implement Tests\""
+    "init": "flow.js init",
+    "deploy": "flow.js deploy",
+    "validate": "npm run test && npm run lint",
+    "test": "NODE_ENV=test mocha -t 50000 --recursive src/tests",
+    "lint": "eslint flow.js src"
+  },
+  "bin": {
+    "flow": "flow.js"
+  },
+  "engines": {
+    "node": ">=8.10.0"
   },
   "repository": {
     "type": "git",
