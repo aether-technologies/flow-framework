@@ -124,14 +124,18 @@ function runFlowSystem() {
 // ###########################
 // ## CLI Definition
 // ###########################
-
 program
     .command('init')
-    .argument('<type>', 'type of initialization')
+    .option('-t, --type [type]', 'type of initialization')
     .description('Initialize the Flow system')
-    .action((type) => {
+    .action((cmdObj) => {
+        let type = cmdObj.type || "all";
         createDirectory('src/all'); //Everyone gets src/all
         switch (type) {
+            case 'all':
+                initFlowClient();
+                initFlowServer();
+                // initFlowServerless(); // Not implemented yet
             case 'client':
                 initFlowClient();
                 break;
@@ -141,14 +145,10 @@ program
             case 'serverless':
                 initFlowServerless();
                 break;
-            case 'all':
             default:
-                initFlowClient();
-                initFlowServer();
-                // initFlowServerless(); // Not implemented yet
+                console.error("Invalid initialization type: "+type);
         }
     });
-
 program
     .command('build')
     .description('Build the Flow module')
