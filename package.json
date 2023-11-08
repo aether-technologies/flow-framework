@@ -2,6 +2,7 @@
   "name": "flow-framework",
   "version": "1.0.0",
   "description": "A cross-platform javascript framework incorporating aspects of flow-based programming (FBP).",
+  "type": "module",
   "main": "flow.js",
   "scripts": {
     "init": "flow.js init",

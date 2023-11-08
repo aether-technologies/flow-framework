@@ -6,7 +6,7 @@ program
     .command('init')
     .description('Initialize the Flow module framework')
     .action(() => {
-        // Implement the logic for initializing the project.
+        console.log("Initializing the Flow module framework...");
     });
 
 program
@@ -15,7 +15,7 @@ program
     .action(() => {
         // Execute the build script based on the OS
         if (process.platform === 'win32') {
-            exec('build-flow-system.ps1', (err, stdout, stderr) => {
+            exec('scripts/build-flow-system.ps1', (err, stdout, stderr) => {
                 if (err) {
                     console.error(err);
                     return;
@@ -23,7 +23,7 @@ program
                 console.log(stdout);
             });
         } else {
-            exec('./build-flow-system..sh', (err, stdout, stderr) => {
+            exec('./scripts/build-flow-system.sh', (err, stdout, stderr) => {
                 if (err) {
                     console.error(err);
                     return;
@@ -39,7 +39,7 @@ program
     .action(() => {
         // Execute the clean script based on the OS
         if (process.platform === 'win32') {
-            exec('clean-flow-build.ps1', (err, stdout, stderr) => {
+            exec('scripts/clean-flow-build.ps1', (err, stdout, stderr) => {
                 if (err) {
                     console.error(err);m
                     return;
@@ -47,7 +47,7 @@ program
                 console.log(stdout);
             });
         } else {
-            exec('./clean-flow-build.sh', (err, stdout, stderr) => {
+            exec('./scripts/clean-flow-build.sh', (err, stdout, stderr) => {
                 if (err) {
                     console.error(err);
                     return;
@@ -63,7 +63,7 @@ program
     .action(() => {
         // Execute the run script based on the OS
         if (process.platform === 'win32') {
-            exec('run-flow-system.ps1', (err, stdout, stderr) => {
+            exec('scripts/run-flow-system.ps1', (err, stdout, stderr) => {
                 if (err) {
                     console.error(err);
                     return;
@@ -71,7 +71,7 @@ program
                 console.log(stdout);
             });
         } else {
-            exec('./run-flow-system.sh', (err, stdout, stderr) => {
+            exec('./scripts/run-flow-system.sh', (err, stdout, stderr) => {
                 if (err) {
                     console.error(err);
                     return;
