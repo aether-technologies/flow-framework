@@ -2,7 +2,7 @@
 import { program } from 'commander';
 import { exec, execSync } from 'child_process';
 import fs from 'fs';
-
+import path from 'path';
 
 const indexHtmlContent = `<!DOCTYPE html>
 <html lang="en">
