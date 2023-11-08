@@ -66,7 +66,7 @@ function initFlowClient() {
     fs.writeFileSync(path.join(clientDir, 'my-module.js'), indexJsContent);
 }
 
-function initFlowServer(serverDir) {
+function initFlowServer() {
     const serverDir = 'src/server';
     createDirectory(serverDir);
     console.log("TODO: How to properly initialize the 'framework' folder? It needs files copied from somewhere...");
