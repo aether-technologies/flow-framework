@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import { exec } from 'child_process';
+import { exec, execSync } from 'child_process';
 import fs from 'fs';
 
 
@@ -46,7 +46,7 @@ const my_module = new MyModule(); //Initialize the module, which adds it to the 
 
 function createDirectory(dir) {
     if (!fs.existsSync(dir)) {
-        fs.mkdirSync(clientDir, { recursive: true });
+        fs.mkdirSync(dir, { recursive: true });
     }
 }
 function initFlowClient() {
