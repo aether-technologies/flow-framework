@@ -4,6 +4,10 @@ import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
+const flowClientInstallUrl = 'git+https://github.com/aether-technologies/flow-client.git#main';
+const flowServerInstallUrl = 'git+https://github.com/aether-technologies/flow-server.git#main';
+const flowServerlessInstallUrl = '';
+
 const indexHtmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +54,8 @@ function createDirectory(dir) {
     }
 }
 function initFlowClient() {
+    execSync('npm install --local '+flowClientInstallUrl, { stdio: 'inherit' }); // Run npm install flow-client
+
     const clientDir = 'src/web';
     const staticWebDir = 'www';
     const staticJsDir = 'www/js';
@@ -60,13 +66,14 @@ function initFlowClient() {
     createDirectory(staticJsDir);
     createDirectory(staticStylesDir);
     createDirectory(staticImagesDir);
-
     fs.writeFileSync(path.join(staticWebDir, 'index.html'), indexHtmlContent);
     fs.writeFileSync(path.join(staticWebDir, 'index.js'), indexJsContent);
-    fs.writeFileSync(path.join(clientDir, 'my-module.js'), indexJsContent);
+    fs.writeFileSync(path.join(clientDir, 'my-module.js'), mymoduleContent);
 }
 
 function initFlowServer() {
+    execSync('npm install --local '+flowServerInstallUrl, { stdio: 'inherit' }); // Run npm install flow-server
+
     const serverDir = 'src/server';
     createDirectory(serverDir);
     console.log("TODO: How to properly initialize the 'framework' folder? It needs files copied from somewhere...");
