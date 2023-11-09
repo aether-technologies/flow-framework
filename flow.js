@@ -54,7 +54,7 @@ function createDirectory(dir) {
     }
 }
 function initFlowClient() {
-    execSync('npm install --local '+flowClientInstallUrl, { stdio: 'inherit' }); // Run npm install flow-client
+    execSync('npm init -y -f && npm install '+flowClientInstallUrl, { stdio: 'inherit' }); // Run npm install flow-client
 
     const clientDir = 'src/web';
     const staticWebDir = 'www';
@@ -72,7 +72,7 @@ function initFlowClient() {
 }
 
 function initFlowServer() {
-    execSync('npm install --local '+flowServerInstallUrl, { stdio: 'inherit' }); // Run npm install flow-server
+    execSync('npm init -y -f && npm install '+flowServerInstallUrl, { stdio: 'inherit' }); // Run npm install flow-server
 
     const serverDir = 'src/server';
     createDirectory(serverDir);
