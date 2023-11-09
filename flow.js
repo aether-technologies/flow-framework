@@ -54,7 +54,8 @@ function createDirectory(dir) {
     }
 }
 function initFlowClient() {
-    execSync('npm init -y -f && npm install '+flowClientInstallUrl, { stdio: 'inherit' }); // Run npm install flow-client
+    //TODO: either find a different way to do this or make it work on Windows
+    execSync('npm init -y -f &> /dev/null && npm install '+flowClientInstallUrl, { stdio: 'inherit' }); // Run npm install flow-client
 
     const clientDir = 'src/web';
     const staticWebDir = 'www';
@@ -72,7 +73,8 @@ function initFlowClient() {
 }
 
 function initFlowServer() {
-    execSync('npm init -y -f && npm install '+flowServerInstallUrl, { stdio: 'inherit' }); // Run npm install flow-server
+    //TODO: either find a different way to do this or make it work on Windows
+    execSync('npm init -y -f &> /dev/null && npm install '+flowServerInstallUrl, { stdio: 'inherit' }); // Run npm install flow-server
 
     const serverDir = 'src/server';
     createDirectory(serverDir);
@@ -98,7 +100,8 @@ function buildFlowSystem() {
 
     // Package the server-side code
     console.log('Packaging server-side code');
-    fs.copyFileSync('node_modules', 'build/bin/node_modules');
+    // fs.copyFileSync('node_modules', 'build/bin/node_modules');
+    fs.cpSync('node_modules', 'build/bin', {recursive: true});
     fs.rmSync('build/bin/node_modules/flow-client', { recursive: true, force: true });
     fs.copyFileSync('framework/*', 'build/bin');
     fs.copyFileSync('src/all/*', 'build/bin');
