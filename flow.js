@@ -98,7 +98,7 @@ function buildFlowSystem() {
 
     // Package the server-side code
     console.log('Packaging server-side code');
-    fs.copyFileSync('node_modules', 'build/bin');
+    fs.copyFileSync('node_modules', 'build/bin/node_modules');
     fs.rmSync('build/bin/node_modules/flow-client', { recursive: true, force: true });
     fs.copyFileSync('framework/*', 'build/bin');
     fs.copyFileSync('src/all/*', 'build/bin');
