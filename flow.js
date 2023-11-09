@@ -118,7 +118,8 @@ function buildFlowSystem() {
     fs.cpSync('src/all', 'build/www/js', {recursive: true});
     // fs.copyFileSync('src/web/*', 'build/www/js');
     fs.cpSync('src/web', 'build/www/js', {recursive: true});
-    fs.copyFileSync('node_modules/flow-client/dist/*', 'build/www/js/');
+    // fs.copyFileSync('node_modules/flow-client/dist/*', 'build/www/js/');
+    fs.cpSync('node_modules/flow-client/dist', 'build/www/js', {recursive: true});
 
     // Finish
     console.log('Done');
