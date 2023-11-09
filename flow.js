@@ -101,17 +101,23 @@ function buildFlowSystem() {
     // Package the server-side code
     console.log('Packaging server-side code');
     // fs.copyFileSync('node_modules', 'build/bin/node_modules');
-    fs.cpSync('node_modules', 'build/bin', {recursive: true});
+    fs.cpSync('node_modules', 'build/bin/node_modules', {recursive: true});
     fs.rmSync('build/bin/node_modules/flow-client', { recursive: true, force: true });
-    fs.copyFileSync('framework/*', 'build/bin');
-    fs.copyFileSync('src/all/*', 'build/bin');
-    fs.copyFileSync('src/server/*', 'build/bin');
+    // fs.copyFileSync('framework/*', 'build/bin');
+    fs.cpSync('framework', 'build/bin', {recursive: true});
+    // fs.copyFileSync('src/all/*', 'build/bin');
+    fs.cpSync('src/all', 'build/bin', {recursive: true});
+    // fs.copyFileSync('src/server/*', 'build/bin');
+    fs.cpSync('src/server', 'build/bin', {recursive: true});
 
     // Package the client-side code
     console.log('Packaging client-side code');
-    fs.copyFileSync('www/*', 'build/www');
-    fs.copyFileSync('src/all/*', 'build/www/js');
-    fs.copyFileSync('src/web/*', 'build/www/js');
+    // fs.copyFileSync('www/*', 'build/www');
+    fs.cpSync('www', 'build/www', {recursive: true});
+    // fs.copyFileSync('src/all/*', 'build/www/js');
+    fs.cpSync('src/all', 'build/www/js', {recursive: true});
+    // fs.copyFileSync('src/web/*', 'build/www/js');
+    fs.cpSync('src/web', 'build/www/js', {recursive: true});
     fs.copyFileSync('node_modules/flow-client/dist/*', 'build/www/js/');
 
     // Finish
