@@ -85,46 +85,62 @@ function initFlowServerless() {
 }
 
 function buildFlowSystem() {
-    // Run npm install
-    execSync('npm install', { stdio: 'inherit' });
+    executeBuildForLinux();
+}
+function executeBuildForLinux() {
+    const commands = [
+        'npm install',
+        'mkdir -p build/www/js build/www/css build/bin build/config',
+        'echo "Packaging flow-client"',
+        'cd node_modules/flow-client && npm install && npm run build && cd ../..',
+        'echo "Packaging server-side code"',
+        'cp -rf node_modules build/bin',
+        'rm -rf build/bin/node_modules/flow-client',
+        'if [ -d framework ] && [ "$(ls -A framework)" ]; then cp -rf framework/* build/bin; fi',
+        'if [ -d src/all ] && [ "$(ls -A src/all)" ]; then cp -rf src/all/* build/bin/; fi',
+        'if [ -d src/server ] && [ "$(ls -A src/server)" ]; then cp -rf src/server/* build/bin; fi',
+        'echo "Packaging client-side code"',
+        'if [ -d www ] && [ "$(ls -A www)" ]; then cp -rf www/* build/www; fi',
+        'if [ -d src/all ] && [ "$(ls -A src/all)" ]; then cp -rf src/all/* build/www/js; fi'
+    ];
+    for (const command of commands) {
+        try {
+            execSync(command, { stdio: 'inherit' });
+        } catch (error) {
+            console.error(`Error executing command "${command}": ${error}`);
+            break;
+        }
+    }
+}
+function executeBuildForWindows() {
+    const commands = [
+        'npm install',
+        'mkdir -p build/www/js build/www/css build/bin build/config',
+        'echo "Packaging flow-client"',
+        'cd node_modules/flow-client',
+        'npm install',
+        'npm run build',
+        'cd ../..',
+        'cp -rf node_modules/flow-client/dist/* build/www/js',
+        'echo "Packaging server-side code"',
+        'cp -rf node_modules build/bin',
+        'rm -rf build/bin/node_modules/flow-client',
+        'cp -rf src/all/* build/bin',
+        'cp -rf src/server/* build/bin',
+        'cp -rf framework/* build/bin',
+        'echo "Packaging client-side code"',
+        'cp -rf www/* build/www',
+        'cp -rf src/all/* build/www/js'
+    ];
 
-    // Create directories
-    fs.mkdirSync('build/www/js', { recursive: true });
-    fs.mkdirSync('build/www/css', { recursive: true });
-    fs.mkdirSync('build/bin', { recursive: true });
-    fs.mkdirSync('build/config', { recursive: true });
-
-    // Package the flow-client code
-    console.log('Packaging flow-client');
-    execSync('cd node_modules/flow-client && npm install && npm run build', { stdio: 'inherit' });
-
-    // Package the server-side code
-    console.log('Packaging server-side code');
-    // fs.copyFileSync('node_modules', 'build/bin/node_modules');
-    fs.cpSync('node_modules', 'build/bin/node_modules', {recursive: true});
-    fs.rmSync('build/bin/node_modules/flow-client', { recursive: true, force: true });
-    // fs.copyFileSync('framework/*', 'build/bin');
-    fs.cpSync('framework', 'build/bin', {recursive: true});
-    // fs.copyFileSync('src/all/*', 'build/bin');
-    fs.cpSync('src/all', 'build/bin', {recursive: true});
-    // fs.copyFileSync('src/server/*', 'build/bin');
-    fs.cpSync('src/server', 'build/bin', {recursive: true});
-
-    // Package the client-side code
-    console.log('Packaging client-side code');
-    // fs.copyFileSync('www/*', 'build/www');
-    fs.cpSync('www', 'build/www', {recursive: true});
-    // fs.copyFileSync('src/all/*', 'build/www/js');
-    fs.cpSync('src/all', 'build/www/js', {recursive: true});
-    // fs.copyFileSync('src/web/*', 'build/www/js');
-    fs.cpSync('src/web', 'build/www/js', {recursive: true});
-    fs.execSync('cp -rf node_modules/flow-client/dist/* build/www/js/')
-    // fs.copyFileSync('node_modules/flow-client/dist/*', 'build/www/js/');
-    // fs.cpSync('node_modules/flow-client/dist', 'build/www/js', {recursive: true});
-
-    // Finish
-    console.log('Done');
-    console.log('Start server with: \n  node build/bin/server.mjs');
+    for (const command of commands) {
+        try {
+            execSync(command, { stdio: 'inherit' });
+        } catch (error) {
+            console.error(`Error executing command "${command}": ${error}`);
+            break;
+        }
+    }
 }
 
 function cleanFlowBuild() {
