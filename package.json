@@ -33,8 +33,6 @@
   },
   "homepage": "https://github.com/aether-technologies/flow-framework#readme",
   "dependencies": {
-    "commander": "^11.1.0",
-    "flow-client": "git+https://github.com/aether-technologies/flow-client.git#main",
-    "flow-server": "git+https://github.com/aether-technologies/flow-server.git#main"
+    "commander": "^11.1.0"
   }
 }
