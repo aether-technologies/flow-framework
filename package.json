@@ -1,7 +1,8 @@
 {
-  "name": "flow-framework",
-  "version": "1.0.0",
-  "description": "A cross-platform javascript framework incorporating aspects of flow-based programming (FBP).",
+  "name": "flow-framework-cli",
+  "version": "1.0.2",
+  "description": "A CLI tool for Flow - cross-platform javascript framework incorporating aspects of flow-based programming (FBP).",
+  "type": "module",
   "main": "flow.js",
   "scripts": {
     "init": "flow.js init",
@@ -32,8 +33,6 @@
   },
   "homepage": "https://github.com/aether-technologies/flow-framework#readme",
   "dependencies": {
-    "commander": "^11.1.0",
-    "flow-client": "git+https://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@github.com/aether-technologies/flow-client.git#main",
-    "flow-server": "git+https://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@github.com/aether-technologies/flow-server.git#main"
+    "commander": "^11.1.0"
   }
 }
