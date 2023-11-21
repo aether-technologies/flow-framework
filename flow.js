@@ -4,7 +4,7 @@ import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-const flowFrameworkInstallUrl = 'git+https://github.com/aether-technologies/flow-framework.git#dev';
+const flowFrameworkInstallUrl = 'flow-framework-cli'; //'git+https://github.com/aether-technologies/flow-framework.git#dev';
 const flowClientInstallUrl = 'flow-client'; // 'git+https://github.com/aether-technologies/flow-client.git#main';
 const flowServerInstallUrl = 'flow-server'; // 'git+https://github.com/aether-technologies/flow-server.git#main';
 const flowServerlessInstallUrl = '';
