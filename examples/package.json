@@ -1,0 +1,11 @@
+{
+  "name": "echo-example",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "dependencies": {
+    "flow-client": "^1.0.0",
+    "flow-framework-cli": "^1.0.0",
+    "flow-server": "^0.0.1"
+  }
+}
