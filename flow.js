@@ -4,8 +4,9 @@ import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-const flowClientInstallUrl = 'git+https://github.com/aether-technologies/flow-client.git#main';
-const flowServerInstallUrl = 'git+https://github.com/aether-technologies/flow-server.git#main';
+const flowFrameworkInstallUrl = 'git+https://github.com/aether-technologies/flow-framework.git#dev';
+const flowClientInstallUrl = 'flow-client'; // 'git+https://github.com/aether-technologies/flow-client.git#main';
+const flowServerInstallUrl = 'flow-server'; // 'git+https://github.com/aether-technologies/flow-server.git#main';
 const flowServerlessInstallUrl = '';
 
 const indexHtmlContent = `<!DOCTYPE html>
@@ -17,7 +18,6 @@ const indexHtmlContent = `<!DOCTYPE html>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
     
-  <script src="./js/my-module.js" type="module"></script>
   <script src="./index.js" type="module"></script>
 </head>
 <body>
@@ -25,11 +25,11 @@ const indexHtmlContent = `<!DOCTYPE html>
 </html>`;
 
 const indexJsContent = `
-import FlowNode, { FlowMessage } from './js/flow.bundle.mjs';
+import FlowNode, { FlowMessage } from './js/flow.mjs';
 //Initialize Flow Node`;
 
 const mymoduleContent = `
-import { Flow, FlowMessage } from './js/flow.bundle.mjs';
+import { Flow, FlowMessage } from './js/flow.mjs';
 
 export default class MyModule extends Flow {
     constructor() {
@@ -55,7 +55,7 @@ function createDirectory(dir) {
 }
 function initFlowClient() {
     //TODO: either find a different way to do this or make it work on Windows
-    execSync('npm init -y -f &> /dev/null && npm install '+flowClientInstallUrl, { stdio: 'inherit' }); // Run npm install flow-client
+    execSync('npm install '+flowClientInstallUrl, { stdio: 'inherit' }); // Run npm install flow-client
 
     const clientDir = 'src/web';
     const staticWebDir = 'www';
@@ -67,18 +67,22 @@ function initFlowClient() {
     createDirectory(staticJsDir);
     createDirectory(staticStylesDir);
     createDirectory(staticImagesDir);
+    	       
     fs.writeFileSync(path.join(staticWebDir, 'index.html'), indexHtmlContent);
     fs.writeFileSync(path.join(staticWebDir, 'index.js'), indexJsContent);
     fs.writeFileSync(path.join(clientDir, 'my-module.js'), mymoduleContent);
+    
+    execSync('cp -rf node_modules/flow-framework-cli/src/web/* src/web');
 }
 
 function initFlowServer() {
     //TODO: either find a different way to do this or make it work on Windows
-    execSync('npm init -y -f &> /dev/null && npm install '+flowServerInstallUrl, { stdio: 'inherit' }); // Run npm install flow-server
+    execSync('npm install '+flowServerInstallUrl, { stdio: 'inherit' }); // Run npm install flow-server
 
     const serverDir = 'src/server';
     createDirectory(serverDir);
-    console.log("TODO: How to properly initialize the 'framework' folder? It needs files copied from somewhere...");
+    
+    execSync('cp -rf node_modules/flow-framework-cli/src/server/* src/server');
 }
 function initFlowServerless() {
     console.log("Unfortunately, this initialization is not currently implemented.");
@@ -91,17 +95,23 @@ function executeBuildForLinux() {
     const commands = [
         'npm install',
         'mkdir -p build/www/js build/www/css build/bin build/config',
+        'echo "Loading default Flow Server"',
+        'cp -rf node_modules/flow-framework-cli/framework/* build/bin/',
         'echo "Packaging flow-client"',
         'cd node_modules/flow-client && npm install && npm run build && cd ../..',
         'echo "Packaging server-side code"',
         'cp -rf node_modules build/bin',
         'rm -rf build/bin/node_modules/flow-client',
-        'if [ -d framework ] && [ "$(ls -A framework)" ]; then cp -rf framework/* build/bin; fi',
+        'rm -rf build/bin/node_modules/flow-framework-cli',
+        // 'if [ -d framework ] && [ "$(ls -A framework)" ]; then cp -rf framework/* build/bin; fi',
         'if [ -d src/all ] && [ "$(ls -A src/all)" ]; then cp -rf src/all/* build/bin/; fi',
         'if [ -d src/server ] && [ "$(ls -A src/server)" ]; then cp -rf src/server/* build/bin; fi',
         'echo "Packaging client-side code"',
         'if [ -d www ] && [ "$(ls -A www)" ]; then cp -rf www/* build/www; fi',
-        'if [ -d src/all ] && [ "$(ls -A src/all)" ]; then cp -rf src/all/* build/www/js; fi'
+        'if [ -d src/all ] && [ "$(ls -A src/all)" ]; then cp -rf src/all/* build/www/js; fi',
+        'if [ -d src/web ] && [ "$(ls -A src/web)" ]; then cp -rf src/web/* build/www/js; fi',
+        'cp -rf node_modules/flow-client/dist/* build/www/js'
+        //TODO: Add logic to auto-configure module imports in html
     ];
     for (const command of commands) {
         try {
@@ -164,12 +174,14 @@ program
     .description('Initialize the Flow system')
     .action((cmdObj) => {
         let type = cmdObj.type || "all";
+        execSync('npm init -y -f && npm install '+flowFrameworkInstallUrl, { stdio: 'inherit' }); // Run npm install flow-framework
         createDirectory('src/all'); //Everyone gets src/all
         switch (type) {
             case 'all':
                 initFlowClient();
                 initFlowServer();
                 // initFlowServerless(); // Not implemented yet
+                break;
             case 'client':
                 initFlowClient();
                 break;

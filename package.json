@@ -1,6 +1,6 @@
 {
   "name": "flow-framework-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI tool for Flow - cross-platform javascript framework incorporating aspects of flow-based programming (FBP).",
   "type": "module",
   "main": "flow.js",
