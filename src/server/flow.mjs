@@ -1,4 +1,4 @@
-import FlowNode, { Flow, FlowMessage, FlowConnector, LocalFlowConnector, WsFlowConnector, FlowRouter, FlowManager, FlowMonitor, BaseFlowNode, tools } from 'flow-server';
+import FlowNode, { Flow, FlowMessage, FlowConnector, LocalFlowConnector, WssFlowConnector, FlowRouter, FlowManager, FlowMonitor, BaseFlowNode, tools } from 'flow-server';
 
 // ### BEGIN TOOL IMPORTS ###
 //import { my_tool } from 'my_tool';
