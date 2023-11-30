@@ -25,7 +25,7 @@ const indexHtmlContent = `<!DOCTYPE html>
 </html>`;
 
 const indexJsContent = `
-import FlowNode, { FlowMessage } from './js/flow.mjs';
+import { FlowNode, FlowMessage } from './js/flow.mjs';
 //Initialize Flow Node`;
 
 const mymoduleContent = `
