@@ -130,7 +130,7 @@ function executeBuildForWindows() {
     const commands = [
         'npm install',
         'echo "Loading default Flow Server"',
-        'if (Test-Path -Path "node_modules/flow-framework-cli/framework") { cp -rf node_modules/flow-framework-cli/framework/* build/bin/ }',
+        'if (Test-Path -Path "node_modules/flow-framework-cli/framework") { cp -r -Force node_modules/flow-framework-cli/framework/* build/bin/ }',
         'echo "Packaging flow-client"',
         'cd node_modules/flow-client; npm install; npm run build; cd ../..',
         'cp -r -Force node_modules/flow-client/dist/* build/www/js',
