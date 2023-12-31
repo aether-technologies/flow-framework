@@ -134,13 +134,13 @@ function executeBuildForWindows() {
         'cp -r node_modules/flow-client/dist/* build/www/js',
         'echo "Packaging server-side code"',
         'cp -r node_modules build/bin',
-        'Remove-Item -Recurse -Force build/bin/node_modules/flow-client',
-        'cp -r src/all/* build/bin',
-        'cp -r src/server/* build/bin',
-        'cp -r framework/* build/bin',
+        'if (Test-Path -Path "build/bin/node_modules/flow-client") { Remove-Item -Recurse -Force build/bin/node_modules/flow-client }',
+        'if (Test-Path -Path "src/all") { cp -r src/all/* build/bin }',
+        'if (Test-Path -Path "src/server") { cp -r src/server/* build/bin }',
+        'if (Test-Path -Path "framework") { cp -r framework/* build/bin }',
         'echo "Packaging client-side code"',
-        'cp -r www/* build/www',
-        'cp -r src/all/* build/www/js'
+        'if (Test-Path -Path "www") { cp -r www/* build/www }',
+        'if (Test-Path -Path "src/all") { cp -r src/all/* build/www/js }'
     ];
 
     fs.mkdirSync('build/www/js', { recursive: true });
