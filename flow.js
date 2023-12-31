@@ -142,7 +142,8 @@ function executeBuildForWindows() {
         'if (Test-Path -Path "framework") { cp -r framework/* build/bin }',
         'echo "Packaging client-side code"',
         'if (Test-Path -Path "www") { cp -r -Force www/* build/www }',
-        'if (Test-Path -Path "src/all") { cp -r -Force src/all/* build/www/js }'
+        'if (Test-Path -Path "src/all") { cp -r -Force src/all/* build/www/js }',
+        'if (Test-Path -Path "src/all") { cp -r -Force src/web/* build/www/js }'
     ];
 
     fs.mkdirSync('build/www/js', { recursive: true });
