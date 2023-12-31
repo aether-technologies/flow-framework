@@ -88,8 +88,12 @@ function initFlowServerless() {
     console.log("Unfortunately, this initialization is not currently implemented.");
 }
 
-function buildFlowSystem() {
-    executeBuildForLinux();
+function buildFlowSystem() {    
+    if (process.platform === 'win32') {
+        executeBuildForWindows();
+    } else {
+        executeBuildForLinux();
+    }
 }
 function executeBuildForLinux() {
     const commands = [
@@ -125,27 +129,30 @@ function executeBuildForLinux() {
 function executeBuildForWindows() {
     const commands = [
         'npm install',
-        'mkdir -p build/www/js build/www/css build/bin build/config',
         'echo "Packaging flow-client"',
         'cd node_modules/flow-client',
         'npm install',
         'npm run build',
         'cd ../..',
-        'cp -rf node_modules/flow-client/dist/* build/www/js',
+        'cp -r node_modules/flow-client/dist/* build/www/js',
         'echo "Packaging server-side code"',
-        'cp -rf node_modules build/bin',
-        'rm -rf build/bin/node_modules/flow-client',
-        'cp -rf src/all/* build/bin',
-        'cp -rf src/server/* build/bin',
-        'cp -rf framework/* build/bin',
+        'cp -r node_modules build/bin',
+        'Remove-Item -Recurse -Force build/bin/node_modules/flow-client',
+        'cp -r src/all/* build/bin',
+        'cp -r src/server/* build/bin',
+        'cp -r framework/* build/bin',
         'echo "Packaging client-side code"',
-        'cp -rf www/* build/www',
-        'cp -rf src/all/* build/www/js'
+        'cp -r www/* build/www',
+        'cp -r src/all/* build/www/js'
     ];
 
+    fs.mkdirSync('build/www/js', { recursive: true });
+    fs.mkdirSync('build/www/css', { recursive: true });
+    fs.mkdirSync('build/bin', { recursive: true });
+    fs.mkdirSync('build/config', { recursive: true });
     for (const command of commands) {
         try {
-            execSync(command, { stdio: 'inherit' });
+            execSync(command, { stdio: 'inherit', shell: 'powershell' });
         } catch (error) {
             console.error(`Error executing command "${command}": ${error}`);
             break;
