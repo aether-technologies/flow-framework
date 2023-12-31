@@ -130,10 +130,7 @@ function executeBuildForWindows() {
     const commands = [
         'npm install',
         'echo "Packaging flow-client"',
-        'cd node_modules/flow-client',
-        'npm install',
-        'npm run build',
-        'cd ../..',
+        'cd node_modules/flow-client; npm install; npm run build; cd ../..',
         'cp -r node_modules/flow-client/dist/* build/www/js',
         'echo "Packaging server-side code"',
         'cp -r node_modules build/bin',
