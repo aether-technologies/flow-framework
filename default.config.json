@@ -1,0 +1,17 @@
+{
+  "NAME": "aethio",
+  "PORT": 80,
+  "SSL_CERTIFICATE": "",
+  "SSL_PRIVATE_KEY": "",
+  "WORKSPACE": ".",
+  "WEB_DIR": "./build/www",
+  "FLOW_DIR": "./",
+  "MODULES": [
+    {
+      "name": "ModuleLoader",
+      "file": "./js/module-loader.mjs",
+      "enabled": true
+    }
+  ],
+  "REMOTE_NODES": []
+}
