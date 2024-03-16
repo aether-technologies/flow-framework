@@ -13,6 +13,7 @@ console.log("__dirname: ", __dirname);
 console.log("ARGS: ", ARGS);
 var config = getDefaultConfig();
 var RESTServer;
+var root_endpoint = '/';
 var base_web_path = './www';
 var system_logging = true;
 var info_logging = false;
@@ -22,6 +23,7 @@ async function startServer() {
   if(ARGS[0] === '-c' || ARGS[0] === '--config') {
     config = JSON.parse(await fs.readFile(ARGS[1], 'utf-8'));
   }
+  root_endpoint = config.ROOT_ENDPOINT || '/'+config.NAME;
   base_web_path = path.normalize(path.join(__dirname, config.WEB_DIR));
   system_logging = config.LOGGING === 'SYSTEM' || config.LOGGING === 'DEBUG' || config.LOGGING === 'INFO';
   info_logging = config.LOGGING === 'DEBUG' || config.LOGGING === 'INFO';
@@ -67,17 +69,28 @@ async function startServer() {
 }
 
 async function handleRequest(req, res) {
-  // console.log("Handling request: ", req.url);
+  console.log("Handling request: ", req.url);
   // console.log(" - req :: ",req);
   // console.log(" - res :: ",res);
-  const relativePath = req.url === '/' ? '/index.html' : req.url;
-  const filePath = path.join(base_web_path, relativePath);
 
+  let requestPath = req.url;
+
+  // Check if the request is for the specific endpoint
+  if (requestPath.startsWith(root_endpoint)) {
+    // Remove the root_endpoint from the relativePath
+    requestPath = requestPath.slice(root_endpoint.length);
+  }
+
+  // console.log("requestPath: ", requestPath);
+  const relativePath = requestPath === '/' || requestPath === '' ? '/index.html' : requestPath;
+  // console.log("relativePath: ", relativePath);
+  const filePath = path.join(base_web_path, relativePath);
   // console.log("filePath: ", filePath);
+
   try {
     await fs.access(filePath);
   } catch(error) {
-    console.error(error);
+    if(info_logging) console.error(error);
     res.writeHead(404);
     res.end('404 Not Found');
     return;
@@ -91,15 +104,17 @@ async function handleRequest(req, res) {
       res.writeHead(200, { 'Content-Type': contentType });
       res.end(content, 'utf-8');
     } catch (err) {
+      console.error(err);
       if (err.code === 'ENOENT') {
-      res.writeHead(404);
-      res.end('404 Not Found');
+        res.writeHead(404);
+        res.end('404 Not Found');
       } else {
-      res.writeHead(500);
-      res.end('500 Internal Server Error');
+        res.writeHead(500);
+        res.end('500 Internal Server Error');
       }
     }
   }
+  console.log("chek end");
 };
 
 function getContentType(extname) {
