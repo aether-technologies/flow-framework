@@ -167,9 +167,10 @@ function cleanFlowBuild() {
     fs.rmSync('package-lock.json', { force: true });
 }
 
-function runFlowSystem() {
+function runFlowSystem(cmdObj) {
+    let config_file = cmdObj.config || "./build/config/default.json";
     // Run the server
-    execSync('node build/bin/server.mjs', { stdio: 'inherit' });
+    execSync(`node build/bin/server.mjs --config ${config_file}`, { stdio: 'inherit' });
 }
 
 // ###########################
@@ -214,6 +215,7 @@ program
 
 program
     .command('run')
+    .option('-c, --config [config]', 'configuration file to use when running the server')
     .description('Run the Flow server')
     .action(runFlowSystem);
  

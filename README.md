@@ -31,7 +31,7 @@ flow build
 ```
 
 Once built, you can run the default flow server with
-```
+```bash
 flow run
 ```
 This will start both the server-side flow node and a web server for hosting the client-side code.
