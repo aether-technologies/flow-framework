@@ -11,6 +11,11 @@
       "name": "ModuleLoader",
       "file": "./js/module-loader.mjs",
       "enabled": true
+    },
+    {
+      "name": "StaticFileServer",
+      "file": "./js/static-file-server.mjs",
+      "enabled": true
     }
   ],
   "REMOTE_NODES": []
