@@ -2,9 +2,10 @@ import { promises as fs } from 'fs';
 import os from 'os';
 import path from 'path';
 import { FlowNode } from './flow.mjs';
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname).slice(os.platform() === 'win32' ? 1 : 0);
 const ARGS = process.argv.slice(2);
 var GLOBAL_CONFIG = getDefaultConfig();
-var RESTServer;
 
 async function startServer() {
   if (ARGS[0] === '-c' || ARGS[0] === '--config') {
@@ -12,15 +13,15 @@ async function startServer() {
   }
   
   // Initialize Server FlowNode
-  const flowNode = new FlowNode({ logging: config?.LOGGING === 'DEBUG' });
+  const flowNode = new FlowNode({ logging: GLOBAL_CONFIG?.LOGGING === 'DEBUG' });
   // Load modules and flows
   if (GLOBAL_CONFIG.MODULES) {
-    for (const module of config.MODULES) {
+    for (const module of GLOBAL_CONFIG.MODULES) {
       await loadModule(module);
     }
   }
   if (GLOBAL_CONFIG.FLOWS) {
-    for (const flow of config.FLOWS) {
+    for (const flow of GLOBAL_CONFIG.FLOWS) {
       await loadModule(flow);
     }
   }
@@ -36,7 +37,7 @@ async function loadModule(module) {
       console.log(`Loading remote module: ${module.name} from URL: ${module.file}`);
       return await import(module.file);
     } else {
-      const modulePath = path.resolve(config.FLOW_DIR, module.file);
+      const modulePath = path.resolve(GLOBAL_CONFIG.FLOW_DIR, module.file);
       console.log(`Loading module: ${module.name} from path: ${modulePath}`);
       return await import(`file://${modulePath}`);
     }
