@@ -3,6 +3,8 @@ The Flow Framework is custom framework based on the FBP (Flow-based Programming)
 
 The idea is to allow any ES6 Javascript module that extends the Flow class to be easily and seemlessly integrated into the client-side or server-side of an application built using the Flow Framework.
 
+Note that all Flow implementations must take 'id' and 'config' in their constructor in order to be properly loaded by the ModuleLoader.
+
 ## flow-framework-cli
 
 This tool may be installed by running
