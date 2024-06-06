@@ -14,7 +14,7 @@ async function startServer() {
   }
   
   // Initialize Server FlowNode
-  const flowNode = new FlowNode({ logging: GLOBAL_CONFIG?.LOGGING === 'DEBUG' });
+  const flowNode = new FlowNode({ ...GLOBAL_CONFIG, logging: GLOBAL_CONFIG?.LOGGING === 'DEBUG', MODULES: null });
 
   // Update relative paths to absolute paths
   if (!GLOBAL_CONFIG.FLOW_DIR || !path.isAbsolute(GLOBAL_CONFIG.FLOW_DIR)) {
